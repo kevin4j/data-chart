@@ -1,0 +1,96 @@
+body{
+	width: 100%;
+	height: 100%;
+	color: #fff;
+	margin:0;
+	background-image: url(../images/bg.png)
+}
+.absolute{
+	position: absolute !important;margin: 0 !important;
+}
+.bg_left{
+	width: 90%;height: 90%;z-index: 0;transform: rotate(0deg);opacity: 1;pointer-events: none;left: 10px;top: 22px;
+}
+.bg_left_bg{
+	width: 100%;
+	height: 100%;
+	background-image: url(../images/left.png);background-repeat: no-repeat;background-size: 100% 100%;
+}
+.bg_right{
+	width: 90%; height: 90%; z-index: 0; transform: rotate(0deg); opacity: 1; pointer-events: none; right: 10px; bottom:10px;
+}
+.bg_right_bg{
+	width: 100%;
+	height: 100%;
+	background-image: url(../images/right.png);background-repeat: no-repeat;background-size: 100% 100%;
+}
+
+.curr_amount_div{
+	width: 100%;
+	height: 44%;
+	border: 1px solid #0a385d;
+}
+
+.title{
+	background-color: #0a385d; 
+	padding-left: 10px;
+	font-size: 14px;
+	line-height: 30px;
+}
+
+.curr_amount_div #money{
+	font-size: 40px;
+	text-align: center;
+	margin-top: 50px;
+	color:#0df3c8;
+}
+.curr_amount_div #rateDiv{
+	text-align: center;
+	margin-top: 30px;
+}
+
+.line_div{
+	width: 100%;
+	height: 44%;
+	border: 1px solid #0a385d;
+}
+
+.pie_div{
+	width: 100%;
+	height: 56%;
+	border: 1px solid #0a385d;
+}
+
+.bar_div{
+	width: 100%;
+	height: 56%;
+	border: 1px solid #0a385d;
+}
+
+.pageTitle{
+	line-height: 46px;
+	font-size: 22px;
+	text-align: center;
+}
+.tool{
+	float: right;
+    margin-top: -46px;
+    margin-right: 10px;
+}
+
+.content{
+	margin: 24px 32px 0px 22px;
+}
+.content .leftDiv{
+	display:inline-block;
+	width: 30%;
+	height:100%;
+	vertical-align: top;
+}
+.content .rightDiv{
+	display:inline-block;
+	width: 68%;
+	height:100%;
+	vertical-align: top;
+	margin-left:10px;
+}

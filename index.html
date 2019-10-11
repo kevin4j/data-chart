@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html style="overflow-x: hidden; overflow-y: visible">
+<head lang="en">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="renderer" content="webkit">
+
+	<title>数据可视化demo</title>
+	
+	<style type="text/css">
+		
+	</style>
+	<link rel="stylesheet" type="text/css" href="css/base.css"></link>
+	<link rel="stylesheet" type="text/css" href="css/font_1093828_mm5h4qcx5f.css" media="all" />
+	
+	<script src="js/jquery.min.js"></script>
+	<script src="js/countUp.min.js"></script>
+	<script src="js/echarts.min.js"></script>
+	<script src="js/fullscreen.js"></script>
+	<script src="js/utils.main.js"></script>
+	<script src="js/curve.utils.js"></script>
+	
+</head>
+
+<body>
+
+	<div class="absolute bg_left">
+		<div class="bg_left_bg"></div>
+	</div>
+
+	<div class="absolute bg_right" style="">
+		<div class="bg_right_bg" style=""></div>
+	</div>
+	
+	<div class="pageTitle">
+		数据可视化监控平台
+	</div>
+	
+	<div class="tool" id="fullscreen">
+		<a href="javascript:;" style="color: rgba(73, 175, 198, 0.47);text-decoration: none;">
+			<i class="iconfont icon-quanping"></i><cite style="display:none;">全屏</cite>
+		</a>
+	</div>
+	
+	<div class="content">
+		<div class="leftDiv">
+			<div class="curr_amount_div">
+				<div class="title">当前销售额（元）</div>
+				<div id="money">200000000000</div>
+				<div id="rateDiv" style="text-align:center;">
+					（&nbsp;&nbsp;同比&nbsp;&nbsp;&nbsp;
+					<span style="color: #9c0404;">
+						<span id="rate" style="font-size:24px;color: #9c0404;">11.11</span>%
+						<i class="iconfont icon-zengchang" style="font-size: 12px;bottom: 15px;position: relative;"></i>
+					</span>
+					&nbsp;）
+					
+				</div>
+				
+			</div>
+			<div class="pie_div">
+				<div class="title">分类占比</div>
+				<div id="pieChart" style="width:100%;"></div>
+			</div>
+		</div>
+
+		<div class="rightDiv">
+			<div class="line_div">
+				<div id="lineDiv1" style="display:none;">
+					<div class="title" onclick="changeLineChart()">历年销售额（亿元）</div>
+					<div class="lineChart" id="lineChart" style="width:100%;"></div>
+				</div>
+				<div id="lineDiv2">
+					<div class="title" onclick="changeLineChart()">实时流量（千万）</div>
+					<div class="lineChart" id="lineChart2" style="width:100%;"></div>
+				</div>
+			</div>
+			<div class="bar_div">
+				<div class="title">各平台销售额对比</div>
+				<div id="barChart" style="width:100%;"></div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+<script type="text/javascript">
+var lineChart, barChart, pieChart;
+
+$(function(){
+	f_resize();
+	
+	//当前销售额 【容器、起始值、结束值、小数位、用时秒数】
+	new CountUp('money', 100000000000, 250000000000, 0, 86400, {
+		useEasing: true,
+		useGrouping: true
+	}).start();
+	
+	new CountUp('rate', 11.11, 33.33, 2, 3600, {
+		useEasing: true,
+		useGrouping: true
+	}).start();
+	
+	setTimeout(function(){
+		f_initLineChart();
+		f_initCurveData("lineChart2");
+		
+		f_initBarChart();
+		f_initPieChart();
+	},100);
+	
+	window.onresize=function(){  
+		f_resize();
+		myChart.resize();
+		lineChart.resize();
+		barChart.resize();
+		pieChart.resize();
+	}
+});
+
+//计算各模块高度
+function f_resize(){
+	var winHeight=$(window).height();
+	$("body").css("height", winHeight);
+	
+	var currAmountHeight = $(".curr_amount_div").height();
+	$(".content").css("height", winHeight-90);
+	$("#pieChart").css("height", $(".pie_div").height()-32);
+
+	$("#lineChart").css("height", $(".line_div").height()-32);
+	$("#lineChart2").css("height", $(".line_div").height()-32);
+	$("#barChart").css("height", $(".bar_div").height()-32);
+}
+
+function changeLineChart(){
+	$('#lineDiv1').toggle();
+	$('#lineDiv2').toggle();
+	myChart.resize();
+	lineChart.resize();
+}
+
+//折线图
+function f_initLineChart(){
+	lineChart = echarts.init(document.getElementById("lineChart"));
+
+	var lineOption = {
+		title:{
+			text:'历年销售额',
+			show:false
+		},
+		grid:{
+			top : 30,
+			bottom : 30,
+		},
+		toolbox: {
+			show : true,
+			feature : {
+				dataView : {show: true, readOnly: false},
+				magicType : {show: true, type: ['line', 'bar']},
+				restore : {show: true},
+				saveAsImage : {show: true}
+			}
+		},
+		xAxis: {
+			type: 'category',
+			data: ['2013', '2014', '2015', '2016', '2017', '2018', '2019'],
+			name:'年份',
+			axisLabel:{
+				color:'#fff'
+			},
+			axisLine:{
+				lineStyle:{
+					color:'#fff'
+				}
+			}
+		},
+		yAxis: {
+			type: 'value',
+			name:'销售额',
+			axisLabel:{
+				color:'#fff'
+			},
+			axisLine:{
+				lineStyle:{
+					color:'#fff'
+				}
+			},
+			splitLine:{
+				show:false
+			}
+		},
+		series: [{
+			data: [820, 932, 901, 934, 1290, 1330, 1320],
+			type: 'line',
+			lineStyle :{
+				color : '#6666ff'
+			},
+			label : {
+				show: true,
+				color: '#0df3c8'
+			},
+		}]
+	};
+	lineChart.setOption(lineOption);
+}
+
+//柱状图
+function f_initBarChart(){
+	barChart = echarts.init(document.getElementById("barChart"));
+	var barOption = {
+		title : {
+			text: '数据对比',
+			show:false,
+		},
+		tooltip : {
+			trigger: 'axis'
+		},
+		legend: {
+			data:['小猫电商','小狗电商'],
+			textStyle:{
+				color : '#fff'
+			},
+			top:5
+		},
+		grid:{
+			top : 40,
+			bottom : 30,
+		},
+		toolbox: {
+			show : true,
+			feature : {
+				dataView : {show: true, readOnly: false},
+				magicType : {show: true, type: ['line', 'bar']},
+				restore : {show: true},
+				saveAsImage : {show: true}
+			}
+		},
+		calculable : true,
+		xAxis : [
+			{
+				type : 'category',
+				data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+				axisLabel:{
+					color:'#fff'
+				},
+				axisLine:{
+					lineStyle:{
+						color:'#fff'
+					}
+				}
+			}
+		],
+		yAxis : [
+			{
+				type : 'value',
+				axisLabel:{
+					color:'#fff'
+				},
+				axisLine:{
+					lineStyle:{
+						color:'#fff'
+					}
+				},
+				splitLine:{
+					show:false
+				}
+			}
+		],
+		series : [
+			{
+				name:'小猫电商',
+				type:'bar',
+				data:[2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3],
+				itemStyle : {
+					color : '#6666ff'
+				}
+			},
+			{
+				name:'小狗电商',
+				type:'bar',
+				data:[2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3],
+			}
+		]
+	};
+	barChart.setOption(barOption);
+}
+
+//饼图
+function f_initPieChart(){
+	pieChart = echarts.init(document.getElementById("pieChart"));
+	var pieOption = {
+		grid:{
+			top : -10
+		},
+		tooltip : {
+			trigger: 'item',
+			formatter: "{a} <br/>{b} : {c} ({d}%)"
+		},
+		toolbox: {
+			show : true,
+			feature : {
+				dataView : {show: true, readOnly: false},
+				restore : {show: true},
+				saveAsImage : {show: true}
+			}
+		},
+		series : [
+			{
+				name: '分类比例',
+				type: 'pie',
+				radius : '55%',
+				data:[
+					{value:1548, name:'生鲜'},
+					{value:335, name:'服装'},
+					{value:310, name:'电器'},
+					{value:234, name:'美妆'},
+					{value:135, name:'零食'},
+				],
+				itemStyle: {
+					emphasis: {
+						shadowBlur: 10,
+						shadowOffsetX: 0,
+						shadowColor: 'rgba(0, 0, 0, 0.5)'
+					}
+				},
+				center: ['50%', '48%']
+			}
+		]
+	};
+	pieChart.setOption(pieOption);
+}
+</script>
+
+</html>
